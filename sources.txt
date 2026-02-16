@@ -1,8 +1,15 @@
+Building LLMs from scratch  -  Vizuara
 https://www.youtube.com/playlist?list=PLPTV0NXA_ZSgsLAr8YCgCwhPIJNNtexWu
 
+
+Stanford CS336 Language Modeling from Scratch I 2025  - Stanford Online
 https://www.youtube.com/playlist?list=PLoROMvodv4rOY23Y0BoGoBGgQ1zmU_MT_
 
+
+Basic Concepts - Build an LLM from Scratch - CodingScientist tarafından
 https://www.youtube.com/playlist?list=PL3E6XmqhhLBFqfFMBJo3hUYHu4i8PzfLR
 
+
+;LLM;from scratch  -  Vali Neagu tarafından
 https://www.youtube.com/playlist?list=PLF9-fff8V6JocvvLIwPBpHZGRFOBJdDBY
 
