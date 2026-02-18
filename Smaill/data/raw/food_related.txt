@@ -1,0 +1,85 @@
+item,type
+Margherita Pizza,junk food
+Pepperoni Pizza,junk food
+Chocolate Chip Cookies,junk food
+French Fries,junk food
+Potato Chips,junk food
+Donuts,junk food
+Ice Cream Sundae,junk food
+Cheeseburger,junk food
+Hot Dog,junk food
+Nachos,junk food
+Coca-Cola,soda drink
+Pepsi,soda drink
+Mountain Dew,soda drink
+Sprite,soda drink
+Root Beer,soda drink
+Lemonade,juice drink
+Orange Juice,juice drink
+Apple Cider,juice drink
+Coffee,hot drink
+Espresso,hot drink
+Latte,hot drink
+Green Tea,tea drink
+Iced Tea,tea drink
+Milkshake,milk drink
+Chocolate Milk,milk drink
+Smoothie,blended drink
+Margarita,cocktail drink
+Mojito,cocktail drink
+Beer,alcoholic drink
+Red Wine,alcoholic drink
+Spaghetti Carbonara,pasta recipe
+Chicken Alfredo,pasta recipe
+Pad Thai,noodle recipe
+Ramen,noodle recipe
+Sushi Rolls,rice recipe
+Fried Rice,rice recipe
+Tacos,Mexican recipe
+Burritos,Mexican recipe
+Guacamole,dip recipe
+Salsa,dip recipe
+Apple Pie,dessert recipe
+Cheesecake,dessert recipe
+Brownies,dessert recipe
+Pancakes,breakfast recipe
+Waffles,breakfast recipe
+Omelette,breakfast recipe
+Scrambled Eggs,breakfast recipe
+Avocado Toast,breakfast recipe
+Caesar Salad,salad recipe
+Greek Salad,salad recipe
+Caprese Salad,salad recipe
+Grilled Cheese,sandwich recipe
+BLT Sandwich,sandwich recipe
+Turkey Club,sandwich recipe
+Philly Cheesesteak,sandwich recipe
+Falafel Wrap,Middle Eastern recipe
+Shawarma,Middle Eastern recipe
+Butter Chicken,Indian recipe
+Chicken Tikka Masala,Indian recipe
+Naan Bread,Indian recipe
+Fried Chicken,southern recipe
+BBQ Ribs,southern recipe
+Mac and Cheese,comfort recipe
+Lasagna,Italian recipe
+Stir-Fry Vegetables,Asian recipe
+Teriyaki Chicken,Asian recipe
+Spring Rolls,Asian recipe
+Banana Bread,baked good
+Blueberry Muffins,baked good
+Sourdough Bread,baked good
+Croissants,baked good
+Bagels,baked good
+Hummus,dip/spread
+Peanut Butter Spread,spread
+Jelly Spread,spread
+Pesto Sauce,sauce
+Marinara Sauce,sauce
+Buffalo Wings,appetizer
+Mozzarella Sticks,appetizer
+Onion Rings,appetizer
+Popcorn,Snack
+Pretzels,Snack
+Granola Bars,Snack
+Energy 

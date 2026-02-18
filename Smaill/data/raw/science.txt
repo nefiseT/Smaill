@@ -1,0 +1,90 @@
+term,definition
+Quantum Entanglement,Particles linked so that the state of one instantly influences the other, regardless of distance.[web:1]
+Photosynthesis,Process where plants convert sunlight, CO2, and water into glucose and oxygen.
+Mitochondria,Powerhouse of the cell, generating ATP through cellular respiration.
+Osmoregulation,Regulation of water and salt balance in organisms to maintain homeostasis.[web:1]
+Polymerase Chain Reaction,Technique to amplify DNA segments for analysis.
+Entropy,Measure of disorder or randomness in a thermodynamic system.
+Higgs Boson,Particle that gives other particles mass via the Higgs field.
+CRISPR-Cas9,Gene-editing tool using bacterial defense mechanisms to cut DNA precisely.
+Dark Matter,Invisible substance making up ~27% of the universe's mass-energy.
+Superconductivity,Zero electrical resistance in materials at very low temperatures.
+Redshift,Light stretching to longer wavelengths as objects move away, indicating expansion.
+Axon,Long nerve fiber transmitting electrical impulses away from the cell body.
+Quasar,Extremely luminous active galactic nucleus powered by supermassive black holes.
+Isotope,Atoms of the same element with different neutron counts.
+Fermentation,Anaerobic breakdown of sugars into alcohol or acids for energy.
+Glacier,A massive, slow-moving river of compacted ice and snow.
+Tectonic Plate,Large rigid sections of Earth's lithosphere that shift and cause earthquakes.
+Nebula,Interstellar cloud of dust, gas, and plasma, birthplace of stars.
+Enzyme,Protein catalyst speeding up biochemical reactions without being consumed.
+Photon,Quantum of electromagnetic radiation, behaving as both particle and wave.
+Halophile,Extremophile organism thriving in high-salt environments.
+Symbiosis,Close, long-term interaction between two different species.
+Paleontology,Study of prehistoric life through fossils.
+Meiosis,Cell division producing gametes with half the chromosome number.
+Tachyon,Hypothetical faster-than-light particle.
+Exoplanet,Planet orbiting a star outside our solar system.
+Lichen,Composite organism of fungus and alga living symbiotically.
+Radiocarbon Dating,Method using carbon-14 decay to date organic remains.
+Troposphere,Lowest atmospheric layer where weather occurs.
+Karyotype,Visual display of an organism's chromosomes arranged by size.
+Biodiversity,Variety of life in an ecosystem at all levels.
+Astrocyte,Star-shaped glial cell supporting neurons in the brain.
+Hydrothermal Vent,Ocean floor fissure emitting mineral-rich superheated water.
+Eigenvalue,Scalar associated with a linear transformation's eigenvector.
+Proteomics,Large-scale study of proteins, especially their structures and functions.
+Schrödinger's Cat,Thought experiment on quantum superposition.
+Upwelling,Ocean process bringing nutrient-rich deep water to the surface.
+Paleomagnetism,Study of Earth's ancient magnetic field in rocks.
+Glycolysis,Cytoplasmic pathway breaking glucose into pyruvate.
+Magnetosphere,Region around Earth dominated by its magnetic field.
+Quorum Sensing,Bacterial cell-to-cell communication via signaling molecules.
+Fjord,Long, narrow inlet with steep sides carved by glaciers.
+Tardigrade,Microscopic extremophile surviving extreme conditions.
+Platelet,Blood cell fragment essential for clotting.
+Synapse,Junction where neurons communicate via neurotransmitters.
+Homeostasis,Maintenance of stable internal conditions despite external changes.
+Neutrino,Nearly massless particle interacting weakly with matter.
+Coral Bleaching,Loss of symbiotic algae from corals due to stress.
+Fractal,Geometric shape self-similar across scales.
+Viroid,Smallest infectious agent, naked RNA without protein coat.
+Ionosphere,Atmospheric layer ionized by solar radiation, aiding radio waves.
+Metagenomics,Genetic analysis of microbial communities from environmental samples.
+Pulsar,Rotating neutron star emitting beams of electromagnetic radiation.
+Chaperone Protein,Assists in proper folding of other proteins.
+Ecosystem Service,Benefits humans derive from natural ecosystems.
+Helioseismology,Study of Sun's interior via sound wave oscillations.
+Ribosome,Cellular machinery synthesizing proteins from mRNA.
+Ozone Hole,Seasonal depletion of stratospheric ozone over Antarctica.
+Eigenvector,Vector unchanged in direction by a linear transformation.
+Thermohaline Circulation,Global ocean conveyor driven by temperature and salinity.
+Endorphin,Brain chemical reducing pain and boosting pleasure.
+Virulence Factor,Microbial trait enhancing disease-causing ability.
+Zoonosis,Disease jumping from animals to humans.
+Calorie,Energy unit to raise 1g water by 1°C.
+Phototropism,Plant growth toward light.
+Spermatogenesis,Sperm cell production in testes.
+Apoptosis,Programmed cell death for tissue maintenance.
+Lepton,Fundamental particle like electrons, not feeling strong force.
+Cryovolcano,Ice volcano erupting volatiles on outer solar bodies.
+Myelin Sheath,Insulating layer speeding nerve impulses.
+Quark,Fundamental particle composing protons and neutrons.
+Denitrification,Bacterial conversion of nitrates to nitrogen gas.
+Aurora Borealis,Northern lights from solar particles hitting atmosphere.
+Capsid,Viral protein coat enclosing genetic material.
+Turgor Pressure,Water pressure maintaining plant cell rigidity.
+Radiometric Dating,Age determination via radioactive isotope decay.
+Lysosome,Organelle digesting waste via hydrolytic enzymes.
+Psychrophile,Cold-loving microbe thriving below 15°C.
+Saccharide,Sugar or carbohydrate molecule.
+Gametophyte,Haploid plant phase producing gametes.
+Perovskite,Crystal structure used in solar cells.
+Anthropocene,Geological epoch dominated by human impact.
+Cytokine,Signaling protein regulating immunity and inflammation.
+Halogen,Reactive nonmetal group including chlorine and iodine.
+Nitrification,Bacterial oxidation of ammonia to nitrates.
+Sarcopenia,Age-related muscle loss.
+Taxonomy,Science of classifying organisms.
+Vesicle,Membrane-bound sac transporting materials in cells.
+Xenobiology,Study of hypothetical alien biochemistry.
