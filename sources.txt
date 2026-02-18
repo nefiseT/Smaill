@@ -13,3 +13,5 @@ https://www.youtube.com/playlist?list=PL3E6XmqhhLBFqfFMBJo3hUYHu4i8PzfLR
 ;LLM;from scratch  -  Vali Neagu tarafından
 https://www.youtube.com/playlist?list=PLF9-fff8V6JocvvLIwPBpHZGRFOBJdDBY
 
+https://levelup.gitconnected.com/lets-build-our-own-gpt-model-from-scratch-with-pytorch-236a65a1fb54
+
