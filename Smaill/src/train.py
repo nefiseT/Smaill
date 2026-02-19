@@ -23,7 +23,7 @@ optimizer = torch.optim.Adam(model.parameters(), lr = 1e-3)
 
 #training loop
 batch_size = 32
-for steps in range(2000):
+for steps in range(5000):
     ix = torch.randint(0, len(train_data) - batch_size, (batch_size,))
     x = torch.stack([train_data[i:i+32] for i in ix])
     y = torch.stack([train_data[i+1:i+32+1] for i in ix])
