@@ -2,11 +2,32 @@ import torch
 import torch.nn as nn
 from torch.nn import functional as F
 
+
+class Head(nn.Module):
+    def __init__(self, head_size, n_embd, block_size):
+        super().__init__()
+        self.key = nn.Linear(n_embd, head_size, bias=False)
+        self.query = nn.Linear(n_embd, head_size, bias=False)
+        self.value = nn.Linear(n_embd, head_size, bias=False)
+        self.register_buffer('tril', torch.tril(torch.ones(block_size, block_size)))
+
+    def forward(self, x):
+        B, T, C = x.shape
+        k = self.key(x)
+        q = self.query(x)
+        wei = q@ k.transpose(-2, -1) * C**-0.5
+        wei = wei.masked_fill(self.tril[:T, :T] ==0, float('-inf'))
+        wei = F.softmax(wei, dim= -1)
+        v = self.value(x)
+        out = wei @ v
+        return out
+    
+
 class Smaill(nn.Module): 
     def __init__(self, vocab_size):
         super().__init__()
         self.n_embd = 64    #small vectorr size
-        self.block_size = 32       #short memory, token length
+        self.block_size = 64       #short memory, token length
 
         self.token_embedding_table = nn.Embedding(vocab_size, self.n_embd)
         self.position_embedding_table = nn.Embedding(self.block_size, self.n_embd)
@@ -36,7 +57,7 @@ class Smaill(nn.Module):
             idx_cond = idx[:, -self.block_size:]
             logits, loss = self(idx_cond)
             logits = logits[:, -1, :]
-            probs = F.softmax(logits, dim=-1)
+            probs = F.softmax(logits / 0.8, dim=-1)
             idx_next = torch.multinomial(probs, num_samples = 1)
             idx = torch.cat((idx, idx_next), dim = 1)
         return idx
