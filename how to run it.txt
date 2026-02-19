@@ -5,4 +5,4 @@ to run model:
     run tokenizer.py  - runs as terminal app
 
 
-    run app.py  -   w ui and text bubbles
+    run app.py  -  streamlit run app.py    -   w ui and text bubbles
