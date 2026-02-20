@@ -52,7 +52,7 @@ class Smaill(nn.Module):
 
         return logits, loss
     
-    def generate(self, idx, max_new_tokens):
+    def generate(self, idx, max_new_tokens):    #multinomial sampling
         for _ in range(max_new_tokens):
             idx_cond = idx[:, -self.block_size:]
             logits, loss = self(idx_cond)
