@@ -2,7 +2,7 @@ to run model:
     run data_cleaner.py to generate one text file as " training_input.txt " text datase tare located in /data/raw . some random quotes and sentences
 
     run model.py
+    run train.py
     run tokenizer.py  - runs as terminal app
-
 
     run app.py  -  streamlit run app.py    -   w ui and text bubbles
