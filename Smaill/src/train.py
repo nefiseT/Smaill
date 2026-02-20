@@ -23,7 +23,7 @@ optimizer = torch.optim.Adam(model.parameters(), lr = 1e-3)
 
 #training loop
 batch_size = 32
-for steps in range(5000):
+for steps in range(20000):
     ix = torch.randint(0, len(train_data) - batch_size, (batch_size,))
     x = torch.stack([train_data[i:i+32] for i in ix])
     y = torch.stack([train_data[i+1:i+32+1] for i in ix])
@@ -31,10 +31,14 @@ for steps in range(5000):
     logits, loss = model(x,y)
     optimizer.zero_grad(set_to_none= True)
     loss.backward()
+
+    torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0) #gradient clipping
     optimizer.step()
     
     if steps % 500 == 0:
-        print(f"Step{steps}: loss{loss.item():.4f}")
+        context = torch.zeros((1,1), dtype=torch.long)
+        sample = tokenizer.decode(model.generate(context, max_new_tokens=20)[0].tolist())      
+        print(f"Step{steps}: loss{loss.item():.4f} | Sample: {sample}")
     
 torch.save(model.state_dict(), "weights/smaill.pt")
 print("model trained & weights saved...")
