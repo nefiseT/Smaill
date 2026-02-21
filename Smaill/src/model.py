@@ -26,8 +26,8 @@ class Head(nn.Module):
 class Smaill(nn.Module): 
     def __init__(self, vocab_size):
         super().__init__()
-        self.n_embd = 64    #small vectorr size
-        self.block_size = 64       #short memory, token length
+        self.n_embd = 128    #small vectorr size
+        self.block_size = 128       #short memory, token length
 
         self.token_embedding_table = nn.Embedding(vocab_size, self.n_embd)
         self.position_embedding_table = nn.Embedding(self.block_size, self.n_embd)
@@ -52,12 +52,16 @@ class Smaill(nn.Module):
 
         return logits, loss
     
-    def generate(self, idx, max_new_tokens):    #multinomial sampling
+    def generate(self, idx, max_new_tokens, temperature = 0.7, top_k= 10):    #multinomial sampling
         for _ in range(max_new_tokens):
             idx_cond = idx[:, -self.block_size:]
-            logits, loss = self(idx_cond)
-            logits = logits[:, -1, :]
-            probs = F.softmax(logits / 0.8, dim=-1)
-            idx_next = torch.multinomial(probs, num_samples = 1)
+            logits, _ = self(idx_cond)
+            logits = logits[:, -1, :] / temperature #temp scaling
+            
+            # top-k filtering 
+            v, _ = torch.topk(logits,min(top_k, logits.size(-1)))
+            logits[logits < v[:, [-1]]] = -float('Inf')
+            probs = F.softmax(logits, dim= -1)
+            idx_next = torch.multinomial(probs, num_samples=1)
             idx = torch.cat((idx, idx_next), dim = 1)
         return idx
