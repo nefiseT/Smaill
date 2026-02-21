@@ -19,10 +19,10 @@ train_data = data[:n]
 val_data = data[n:]
 
 model = Smaill(tokenizer.vocab_size)
-optimizer = torch.optim.Adam(model.parameters(), lr = 1e-3)
+optimizer = torch.optim.Adam(model.parameters(), lr = 1e-4)
 
 #training loop
-batch_size = 32
+batch_size = 64
 for steps in range(20000):
     ix = torch.randint(0, len(train_data) - batch_size, (batch_size,))
     x = torch.stack([train_data[i:i+32] for i in ix])
