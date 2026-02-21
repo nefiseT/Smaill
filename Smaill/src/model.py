@@ -62,7 +62,7 @@ class Smaill(nn.Module):
         pos_emb = self.position_embedding_table(torch.arange(T, device=idx.device)) 
         x = tok_emb + pos_emb
         
-        # Apply attention and feed-forward (residual connections)
+        # attention and feed-forward (residual connections) - after this output were midly meaningful
         x = x + self.attention(x)
         x = x + self.ffwd(x)
         
@@ -93,24 +93,13 @@ class Smaill(nn.Module):
             idx = torch.cat((idx, idx_next), dim=1)
         
         return idx
-            targets = targets.view(B * T)
-            loss = F.cross_entropy(logits, targets)
 
-        return logits, loss
-    
-    def generate(self, idx, max_new_tokens, temperature=0.7, top_k=10):    
-        for _ in range(max_new_tokens):
-            idx_cond = idx[:, -self.block_size:]
-            logits, _ = self(idx_cond)
-            logits = logits[:, -1, :] / temperature
-            
-            # Top-k filtering 
-            if top_k > 0:
-                v, _ = torch.topk(logits, min(top_k, logits.size(-1)))
-                logits[logits < v[:, [-1]]] = -float('Inf')
-            
-            probs = F.softmax(logits, dim=-1)
-            idx_next = torch.multinomial(probs, num_samples=1)
-            idx = torch.cat((idx, idx_next), dim=1)
-        
-        return idx
+
+if __name__ == "__main__":
+    print("✓ Smaill model.py loaded successfully!")
+
+    model = Smaill(vocab_size=100, block_size=32, n_embd=64)
+    x = torch.randint(0, 100, (2, 10))  # Batch of 2, 10 tokens
+    logits, loss = model(x)
+    print(f"✓ Forward pass OK: input {x.shape} -> output {logits.shape}")
+    print(f"✓ Model parameters: {sum(p.numel() for p in model.parameters())}")
