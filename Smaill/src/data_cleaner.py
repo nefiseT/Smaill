@@ -21,6 +21,12 @@ def process_all_files(data_dir):
         f.write(combined_chaos)
         print(f"Chaos made character total: {len(combined_chaos)}")
 
+    chars = sorted(list(set(combined_chaos)))
+    vocab_size = len(chars)
+    print("characters: ")
+    print(''.join(chars))
+    print("vocab size:" ,vocab_size)
+
 if __name__ == "__main__":
     process_all_files("data/raw/")
     
