@@ -38,12 +38,10 @@ optimizer = torch.optim.AdamW(model.parameters(), lr=3e-4, weight_decay=0.1)
 batch_size = 128
 block_size = 64
 
-# Training loop
 for steps in range(10000):
     # Sample random starting positions
     ix = torch.randint(0, len(train_data) - block_size, (batch_size,))
     
-    # Create batches
     x = torch.stack([train_data[i:i+block_size] for i in ix])
     y = torch.stack([train_data[i+1:i+block_size+1] for i in ix])
     
@@ -62,14 +60,6 @@ for steps in range(10000):
 torch.save(model.state_dict(), "weights/smaill.pt")
 print("Model trained & weights saved...")
 
-# Generate final sample
-context = torch.zeros((1, 1), dtype=torch.long)
-print("\n---- Generated Text ------")
-print(tokenizer.decode(model.generate(context, max_new_tokens=200)[0].tolist()))
-torch.save(model.state_dict(), "weights/smaill.pt")
-print("Model trained & weights saved...")
-
-# Generate final sample
 context = torch.zeros((1, 1), dtype=torch.long)
 print("\n---- Generated Text ------")
 print(tokenizer.decode(model.generate(context, max_new_tokens=200)[0].tolist()))
