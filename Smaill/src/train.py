@@ -6,7 +6,14 @@ import torch
 from src.model import Smaill
 from src.tokenizer import SimpleTokenizer
 
-# Load all data
+# Detect device - use GPU if available
+device = "cuda" if torch.cuda.is_available() else "cpu"
+print(f"Using device: {device}")
+
+if device == "cuda":
+    print(f"GPU: {torch.cuda.get_device_name(0)}")
+    print(f"GPU Memory: {torch.cuda.get_device_properties(0).total_memory / 1e9:.1f} GB")
+
 with open('data/training_input.txt', 'r', encoding='utf-8') as f:
     text = f.read()
     
@@ -16,7 +23,6 @@ data = torch.tensor(tokenizer.encode(text), dtype=torch.long)
 print(f"Vocabulary size: {tokenizer.vocab_size}")
 print(f"Total tokens: {len(data)}")
 
-# Split data
 n = int(0.9 * len(data))
 train_data = data[:n]
 val_data = data[n:]
@@ -27,11 +33,10 @@ model = Smaill(
     block_size=64,
     n_embd=256,
     n_heads=4
-)
+).to(device)  # Move model to GPU!
 
 print(f"Model parameters: {sum(p.numel() for p in model.parameters())/1e6:.2f}M")
 
-# Use fused optimizer for speed
 optimizer = torch.optim.AdamW(model.parameters(), lr=3e-4, weight_decay=0.1)
 
 # Training hyperparameters - larger batch for speed
@@ -42,8 +47,9 @@ for steps in range(10000):
     # Sample random starting positions
     ix = torch.randint(0, len(train_data) - block_size, (batch_size,))
     
-    x = torch.stack([train_data[i:i+block_size] for i in ix])
-    y = torch.stack([train_data[i+1:i+block_size+1] for i in ix])
+    # Create batches and MOVE TO GPU!
+    x = torch.stack([train_data[i:i+block_size] for i in ix]).to(device)
+    y = torch.stack([train_data[i+1:i+block_size+1] for i in ix]).to(device)
     
     logits, loss = model(x, y)
     
@@ -53,13 +59,15 @@ for steps in range(10000):
     optimizer.step()
     
     if steps % 200 == 0:
-        context = torch.zeros((1, 1), dtype=torch.long)
-        sample = tokenizer.decode(model.generate(context, max_new_tokens=50)[0].tolist())      
+        # Move context to same device for sampling
+        context = torch.zeros((1, 1), dtype=torch.long, device=device)
+        sample = tokenizer.decode(model.generate(context, max_new_tokens=50)[0].cpu().tolist())      
         print(f"Step {steps}: loss {loss.item():.4f} | Sample: {sample}")
 
 torch.save(model.state_dict(), "weights/smaill.pt")
 print("Model trained & weights saved...")
 
-context = torch.zeros((1, 1), dtype=torch.long)
+# Generate final sample
+context = torch.zeros((1, 1), dtype=torch.long, device=device)
 print("\n---- Generated Text ------")
-print(tokenizer.decode(model.generate(context, max_new_tokens=200)[0].tolist()))
+print(tokenizer.decode(model.generate(context, max_new_tokens=200)[0].cpu().tolist()))
