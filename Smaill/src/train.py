@@ -27,7 +27,6 @@ n = int(0.9 * len(data))
 train_data = data[:n]
 val_data = data[n:]
 
-# Optimized model - larger embeddings, single attention head for speed
 model = Smaill(
     vocab_size=tokenizer.vocab_size,
     block_size=64,
@@ -39,12 +38,10 @@ print(f"Model parameters: {sum(p.numel() for p in model.parameters())/1e6:.2f}M"
 
 optimizer = torch.optim.AdamW(model.parameters(), lr=3e-4, weight_decay=0.1)
 
-# Training hyperparameters - larger batch for speed
-batch_size = 128
+batch_size = 128    #larger batch for speed
 block_size = 64
 
 for steps in range(10000):
-    # Sample random starting positions
     ix = torch.randint(0, len(train_data) - block_size, (batch_size,))
     
     # Create batches and MOVE TO GPU!
@@ -59,7 +56,6 @@ for steps in range(10000):
     optimizer.step()
     
     if steps % 200 == 0:
-        # Move context to same device for sampling
         context = torch.zeros((1, 1), dtype=torch.long, device=device)
         sample = tokenizer.decode(model.generate(context, max_new_tokens=50)[0].cpu().tolist())      
         print(f"Step {steps}: loss {loss.item():.4f} | Sample: {sample}")
@@ -67,7 +63,6 @@ for steps in range(10000):
 torch.save(model.state_dict(), "weights/smaill.pt")
 print("Model trained & weights saved...")
 
-# Generate final sample
 context = torch.zeros((1, 1), dtype=torch.long, device=device)
 print("\n---- Generated Text ------")
 print(tokenizer.decode(model.generate(context, max_new_tokens=200)[0].cpu().tolist()))
