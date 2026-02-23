@@ -3,12 +3,11 @@
 start date: 10.02
 
 Chaos made character total: 42373
-characters:
+characters: <br/>
  !"#%&'()+,-./0123456789:;?ABCDEFGHIJKLMNOPQRSTUVWXYZ[]_abcdefghijklmnopqrstuvwxyz~
 vocab size: 83 <br/>
 
-  <img width="310" height="170" alt="image" src="https://github.com/user-attachments/assets/eefa04bf-c945-45b1-836d-3bef392e9aa4" />
-" /> <br/>
+  <img width="310" height="170" alt="image" src="https://github.com/user-attachments/assets/eefa04bf-c945-45b1-836d-3bef392e9aa4" /><br/>
 
 v1 (repo): <br/>
 no memory <br/>
