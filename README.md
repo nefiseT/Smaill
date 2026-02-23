@@ -7,6 +7,8 @@ characters:
  !"#%&'()+,-./0123456789:;?ABCDEFGHIJKLMNOPQRSTUVWXYZ[]_abcdefghijklmnopqrstuvwxyz~
 vocab size: 83
 
+<img width="225" height="225" alt="image" src="https://github.com/user-attachments/assets/8312151a-3a35-4b01-b6df-b22188d2a27e" />
+
 19.02 repo: generates random letters, not meaningul word buildup
 outpt example: wel. nng. Ul Jis.","Theresolivip paloop promeve bestimeatofrace,Sht,"Evetelili,"Ed mbode daninukitmy
 
