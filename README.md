@@ -9,7 +9,7 @@ vocab size: 83
 
 <img width="225" height="225" alt="image" src="https://github.com/user-attachments/assets/8312151a-3a35-4b01-b6df-b22188d2a27e" />
 
-v1 (repo):
+v1 (repo): <br/>
 no memory 
 64 vector size
 32 token length
