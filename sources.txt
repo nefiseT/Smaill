@@ -15,3 +15,6 @@ https://www.youtube.com/playlist?list=PLF9-fff8V6JocvvLIwPBpHZGRFOBJdDBY
 
 https://levelup.gitconnected.com/lets-build-our-own-gpt-model-from-scratch-with-pytorch-236a65a1fb54
 
+https://github.com/shivendrra/SmallLanguageModel
+
+https://github.com/AIAnytime/Training-Small-Language-Model/tree/main
