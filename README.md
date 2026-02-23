@@ -7,7 +7,8 @@ characters:
  !"#%&'()+,-./0123456789:;?ABCDEFGHIJKLMNOPQRSTUVWXYZ[]_abcdefghijklmnopqrstuvwxyz~
 vocab size: 83 <br/>
 
-<img align="center" width="225" height="225" alt="image" src="https://github.com/user-attachments/assets/8312151a-3a35-4b01-b6df-b22188d2a27e" /> <br/>
+<img align="center" width="225" height="225" alt="image" src="<img width="310" height="170" alt="image" src="https://github.com/user-attachments/assets/eefa04bf-c945-45b1-836d-3bef392e9aa4" />
+" /> <br/>
 
 v1 (repo): <br/>
 no memory <br/>
