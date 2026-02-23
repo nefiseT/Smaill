@@ -41,7 +41,6 @@ class Smaill(nn.Module):
         # Single attention head (faster but still effective)
         self.attention = Head(n_embd // n_heads, n_embd, block_size)
         
-        # Simple feed-forward
         self.ffwd = nn.Sequential(
             nn.Linear(n_embd, n_embd * 2),
             nn.GELU(),
