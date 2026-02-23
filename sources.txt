@@ -6,9 +6,11 @@ Stanford CS336 Language Modeling from Scratch I 2025  - Stanford Online
 https://www.youtube.com/playlist?list=PLoROMvodv4rOY23Y0BoGoBGgQ1zmU_MT_
 
 
+Let's build GPT: from scratch, in code, spelled out.
+https://www.youtube.com/watch?v=kCc8FmEb1nY
+
 Basic Concepts - Build an LLM from Scratch - CodingScientist tarafından
 https://www.youtube.com/playlist?list=PL3E6XmqhhLBFqfFMBJo3hUYHu4i8PzfLR
-
 
 ;LLM;from scratch  -  Vali Neagu tarafından
 https://www.youtube.com/playlist?list=PLF9-fff8V6JocvvLIwPBpHZGRFOBJdDBY
@@ -18,3 +20,8 @@ https://levelup.gitconnected.com/lets-build-our-own-gpt-model-from-scratch-with-
 https://github.com/shivendrra/SmallLanguageModel
 
 https://github.com/AIAnytime/Training-Small-Language-Model/tree/main
+
+LaCy: What Small Language Models Can and Should Learn is Not Just a Question of Loss
+https://arxiv.org/abs/2602.12005
+
+https://levelup.gitconnected.com/lets-build-our-own-gpt-model-from-scratch-with-pytorch-236a65a1fb54
