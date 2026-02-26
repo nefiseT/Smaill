@@ -2,31 +2,27 @@ import torch
 import torch.nn as nn
 from torch.nn import functional as F
 
-
 class Head(nn.Module):
-    """Single attention"""
-    def __init__(self, head_size, n_embd, block_size, dropout=0.1):
+    def __init__(self, head_size, n_embd, block_size, dropout=0.2):
         super().__init__()
         self.key = nn.Linear(n_embd, head_size, bias=False)
         self.query = nn.Linear(n_embd, head_size, bias=False)
         self.value = nn.Linear(n_embd, head_size, bias=False)
-        self.proj = nn.Linear(head_size, n_embd)
-        self.dropout = nn.Dropout(dropout)
         self.register_buffer('tril', torch.tril(torch.ones(block_size, block_size)))
+        self.dropout = nn.Dropout(dropout)
 
     def forward(self, x):
         B, T, C = x.shape
-        k = self.key(x)
-        q = self.query(x)
-        # computes attention scores
-        wei = q @ k.transpose(-2, -1) * (C ** -0.5)
+        k = self.key(x)   # (B,T,head_size)
+        q = self.query(x) # (B,T,head_size)
+        # Compute attention scores
+        wei = q @ k.transpose(-2,-1) * (k.shape[-1]**-0.5)
         wei = wei.masked_fill(self.tril[:T, :T] == 0, float('-inf'))
         wei = F.softmax(wei, dim=-1)
         wei = self.dropout(wei)
+        # Aggregate values
         v = self.value(x)
-        out = wei @ v
-        out = self.proj(out)
-        return out
+        return wei @ v
 
 class MultiHeadAttention(nn.Module):
     def __init__(self, num_heads, head_size, n_embd, block_size, dropout=0.2):
@@ -36,12 +32,12 @@ class MultiHeadAttention(nn.Module):
         self.dropout = nn.Dropout(dropout)
 
     def forward(self, x):
-        out_2 = torch.cat([h(x) for h in self.heads], dim=-1)
-        out_2 = self.dropout(self.proj(out))
-        return out_2
+        out = torch.cat([h(x) for h in self.heads], dim=-1)
+        out = self.dropout(self.proj(out))
+        return out
 
 class Block(nn.Module):
-    """ Attention + feed forward = more logic """
+    """ One story of the Skyscraper: Communication (Attention) + Computation (FFWD) """
     def __init__(self, n_embd, n_heads, block_size, dropout=0.2):
         super().__init__()
         head_size = n_embd // n_heads
@@ -82,7 +78,7 @@ class Smaill(nn.Module):
         if T > self.block_size:
             idx = idx[:, -self.block_size:]
             T = self.block_size
-            
+
         tok_emb = self.token_embedding_table(idx)
         pos_emb = self.position_embedding_table(torch.arange(T, device=idx.device)) 
         x = tok_emb + pos_emb
@@ -99,9 +95,9 @@ class Smaill(nn.Module):
             loss = F.cross_entropy(logits, targets)
 
         return logits, loss
-    
+
     def generate(self, idx, max_new_tokens, temperature=0.7, top_k=20):
-        self.eval()     #switch to eval
+        self.eval() # Switch to eval mode for generation
         for _ in range(max_new_tokens):
             idx_cond = idx[:, -self.block_size:]
             logits, _ = self(idx_cond)
@@ -114,10 +110,9 @@ class Smaill(nn.Module):
             probs = F.softmax(logits, dim=-1)
             idx_next = torch.multinomial(probs, num_samples=1)
             idx = torch.cat((idx, idx_next), dim=1)
-        self.train()    #switch to train
+        self.train() # Switch back to train mode
         return idx
-
-
+    
 if __name__ == "__main__":
     print("✓ Smaill model.py loaded successfully!")
 
