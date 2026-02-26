@@ -4,7 +4,7 @@ from torch.nn import functional as F
 
 
 class Head(nn.Module):
-    """Single attention head - optimized"""
+    """Single attention"""
     def __init__(self, head_size, n_embd, block_size, dropout=0.1):
         super().__init__()
         self.key = nn.Linear(n_embd, head_size, bias=False)
@@ -18,6 +18,7 @@ class Head(nn.Module):
         B, T, C = x.shape
         k = self.key(x)
         q = self.query(x)
+        # computes attention scores
         wei = q @ k.transpose(-2, -1) * (C ** -0.5)
         wei = wei.masked_fill(self.tril[:T, :T] == 0, float('-inf'))
         wei = F.softmax(wei, dim=-1)
@@ -27,57 +28,80 @@ class Head(nn.Module):
         out = self.proj(out)
         return out
 
+class MultiHeadAttention(nn.Module):
+    def __init__(self, num_heads, head_size, n_embd, block_size, dropout=0.2):
+        super().__init__()
+        self.heads = nn.ModuleList([Head(head_size, n_embd, block_size, dropout) for _ in range(num_heads)])
+        self.proj = nn.Linear(n_embd, n_embd)
+        self.dropout = nn.Dropout(dropout)
+
+    def forward(self, x):
+        out_2 = torch.cat([h(x) for h in self.heads], dim=-1)
+        out_2 = self.dropout(self.proj(out))
+        return out_2
+
+class Block(nn.Module):
+    """ Attention + feed forward = more logic """
+    def __init__(self, n_embd, n_heads, block_size, dropout=0.2):
+        super().__init__()
+        head_size = n_embd // n_heads
+        self.sa = MultiHeadAttention(n_heads, head_size, n_embd, block_size, dropout)
+        self.ffwd = nn.Sequential(
+            nn.Linear(n_embd, 4 * n_embd),
+            nn.GELU(),
+            nn.Linear(4 * n_embd, n_embd),
+            nn.Dropout(dropout),
+        )
+        self.ln1 = nn.LayerNorm(n_embd)
+        self.ln2 = nn.LayerNorm(n_embd)
+
+    def forward(self, x):
+        # Residual connections (x + ...) help gradients flow during training
+        x = x + self.sa(self.ln1(x))
+        x = x + self.ffwd(self.ln2(x))
+        return x
 
 class Smaill(nn.Module): 
-    def __init__(self, vocab_size, block_size=64, n_embd=256, n_heads=4):
+    def __init__(self, vocab_size, block_size=128, n_embd=256, n_heads=8, n_layers=4, dropout=0.2):
         super().__init__()
         self.block_size = block_size
-        self.n_embd = n_embd
-        
-        # Larger embedding table for better capacity
         self.token_embedding_table = nn.Embedding(vocab_size, n_embd)
         self.position_embedding_table = nn.Embedding(block_size, n_embd)
         
-        # Single attention head (faster but still effective)
-        self.attention = Head(n_embd // n_heads, n_embd, block_size)
+        # The Stack of Layers
+        self.blocks = nn.Sequential(*[
+            Block(n_embd, n_heads, block_size, dropout) for _ in range(n_layers)
+        ])
         
-        self.ffwd = nn.Sequential(
-            nn.Linear(n_embd, n_embd * 2),
-            nn.GELU(),
-            nn.Linear(n_embd * 2, n_embd),
-            nn.Dropout(0.1),
-        )
-        
+        self.ln_f = nn.LayerNorm(n_embd) 
         self.lm_head = nn.Linear(n_embd, vocab_size)
 
     def forward(self, idx, targets=None):
         B, T = idx.shape
-        
+        # Check to avoid position embedding overflow
         if T > self.block_size:
             idx = idx[:, -self.block_size:]
             T = self.block_size
-        
+            
         tok_emb = self.token_embedding_table(idx)
         pos_emb = self.position_embedding_table(torch.arange(T, device=idx.device)) 
         x = tok_emb + pos_emb
         
-        # attention and feed-forward (residual connections) - after this output were midly meaningful
-        x = x + self.attention(x)
-        x = x + self.ffwd(x)
-        
+        x = self.blocks(x) # Pass through all 4 layers
+        x = self.ln_f(x)
         logits = self.lm_head(x)
 
-        if targets is None:
-            loss = None
-        else:
+        loss = None
+        if targets is not None:
             B, T, C = logits.shape
-            logits = logits.view(B * T, C)
-            targets = targets.view(B * T)
+            logits = logits.view(B*T, C)
+            targets = targets.view(B*T)
             loss = F.cross_entropy(logits, targets)
 
         return logits, loss
     
-    def generate(self, idx, max_new_tokens, temperature=0.8, top_k=40):    
+    def generate(self, idx, max_new_tokens, temperature=0.7, top_k=20):
+        self.eval()     #switch to eval
         for _ in range(max_new_tokens):
             idx_cond = idx[:, -self.block_size:]
             logits, _ = self(idx_cond)
@@ -90,7 +114,7 @@ class Smaill(nn.Module):
             probs = F.softmax(logits, dim=-1)
             idx_next = torch.multinomial(probs, num_samples=1)
             idx = torch.cat((idx, idx_next), dim=1)
-        
+        self.train()    #switch to train
         return idx
 
 
