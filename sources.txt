@@ -24,6 +24,8 @@ https://arxiv.org/abs/2602.12005
 
 https://levelup.gitconnected.com/lets-build-our-own-gpt-model-from-scratch-with-pytorch-236a65a1fb54
 
+https://github.com/Infatoshi/fcc-intro-to-llms
+
 Create a Large Language Model from Scratch with Python – Tutorial
 https://www.youtube.com/watch?v=UU1WVnMk4E8
 
