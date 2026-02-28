@@ -1,3 +1,7 @@
+# to work w gpu
+# pip uninstall torch -y ( i had only cpu ver, apperantly that was the issue
+# pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu124
+
 import sys
 import os
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -111,3 +115,4 @@ print("Model trained & weights saved...")
 context = torch.zeros((1, 1), dtype=torch.long, device=device)
 print("\n---- Generated Text ------")
 print(tokenizer.decode(model.generate(context, max_new_tokens=200)[0].cpu().tolist()))
+
