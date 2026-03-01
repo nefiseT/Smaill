@@ -1,7 +1,6 @@
 # to work w gpu
 # pip uninstall torch -y ( i had only cpu ver, apperantly that was the issue
 # pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu124
-
 import sys
 import os
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
