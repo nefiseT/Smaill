@@ -2,102 +2,83 @@ import torch
 import torch.nn as nn
 from torch.nn import functional as F
 
+
 class Head(nn.Module):
-    def __init__(self, head_size, n_embd, block_size, dropout=0.2):
+    """Single attention head - optimized"""
+    def __init__(self, head_size, n_embd, block_size, dropout=0.1):
         super().__init__()
         self.key = nn.Linear(n_embd, head_size, bias=False)
         self.query = nn.Linear(n_embd, head_size, bias=False)
         self.value = nn.Linear(n_embd, head_size, bias=False)
-        self.register_buffer('tril', torch.tril(torch.ones(block_size, block_size)))
+        self.proj = nn.Linear(head_size, n_embd)
         self.dropout = nn.Dropout(dropout)
+        self.register_buffer('tril', torch.tril(torch.ones(block_size, block_size)))
 
     def forward(self, x):
         B, T, C = x.shape
-        k = self.key(x)   # (B,T,head_size)
-        q = self.query(x) # (B,T,head_size)
-        # Compute attention scores
-        wei = q @ k.transpose(-2,-1) * (k.shape[-1]**-0.5)
+        k = self.key(x)
+        q = self.query(x)
+        wei = q @ k.transpose(-2, -1) * (C ** -0.5)
         wei = wei.masked_fill(self.tril[:T, :T] == 0, float('-inf'))
         wei = F.softmax(wei, dim=-1)
         wei = self.dropout(wei)
-        # Aggregate values
         v = self.value(x)
-        return wei @ v
-
-class MultiHeadAttention(nn.Module):
-    def __init__(self, num_heads, head_size, n_embd, block_size, dropout=0.2):
-        super().__init__()
-        self.heads = nn.ModuleList([Head(head_size, n_embd, block_size, dropout) for _ in range(num_heads)])
-        self.proj = nn.Linear(n_embd, n_embd)
-        self.dropout = nn.Dropout(dropout)
-
-    def forward(self, x):
-        out = torch.cat([h(x) for h in self.heads], dim=-1)
-        out = self.dropout(self.proj(out))
+        out = wei @ v
+        out = self.proj(out)
         return out
 
-class Block(nn.Module):
-    """ One story of the Skyscraper: Communication (Attention) + Computation (FFWD) """
-    def __init__(self, n_embd, n_heads, block_size, dropout=0.2):
-        super().__init__()
-        head_size = n_embd // n_heads
-        self.sa = MultiHeadAttention(n_heads, head_size, n_embd, block_size, dropout)
-        self.ffwd = nn.Sequential(
-            nn.Linear(n_embd, 4 * n_embd),
-            nn.GELU(),
-            nn.Linear(4 * n_embd, n_embd),
-            nn.Dropout(dropout),
-        )
-        self.ln1 = nn.LayerNorm(n_embd)
-        self.ln2 = nn.LayerNorm(n_embd)
-
-    def forward(self, x):
-        # Residual connections (x + ...) help gradients flow during training
-        x = x + self.sa(self.ln1(x))
-        x = x + self.ffwd(self.ln2(x))
-        return x
 
 class Smaill(nn.Module): 
-    def __init__(self, vocab_size, block_size=128, n_embd=256, n_heads=8, n_layers=4, dropout=0.2):
+    def __init__(self, vocab_size, block_size=64, n_embd=256, n_heads=4):
         super().__init__()
         self.block_size = block_size
+        self.n_embd = n_embd
+        
+        # Larger embedding table for better capacity
         self.token_embedding_table = nn.Embedding(vocab_size, n_embd)
         self.position_embedding_table = nn.Embedding(block_size, n_embd)
         
-        # The Stack of Layers
-        self.blocks = nn.Sequential(*[
-            Block(n_embd, n_heads, block_size, dropout) for _ in range(n_layers)
-        ])
+        # Single attention head (faster but still effective)
+        self.attention = Head(n_embd // n_heads, n_embd, block_size)
         
-        self.ln_f = nn.LayerNorm(n_embd) 
+        # Simple feed-forward
+        self.ffwd = nn.Sequential(
+            nn.Linear(n_embd, n_embd * 2),
+            nn.GELU(),
+            nn.Linear(n_embd * 2, n_embd),
+            nn.Dropout(0.1),
+        )
+        
         self.lm_head = nn.Linear(n_embd, vocab_size)
 
     def forward(self, idx, targets=None):
         B, T = idx.shape
-        # Check to avoid position embedding overflow
+        
         if T > self.block_size:
             idx = idx[:, -self.block_size:]
             T = self.block_size
-
+        
         tok_emb = self.token_embedding_table(idx)
         pos_emb = self.position_embedding_table(torch.arange(T, device=idx.device)) 
         x = tok_emb + pos_emb
         
-        x = self.blocks(x) # Pass through all 4 layers
-        x = self.ln_f(x)
+        # attention and feed-forward (residual connections) - after this output were midly meaningful
+        x = x + self.attention(x)
+        x = x + self.ffwd(x)
+        
         logits = self.lm_head(x)
 
-        loss = None
-        if targets is not None:
+        if targets is None:
+            loss = None
+        else:
             B, T, C = logits.shape
-            logits = logits.view(B*T, C)
-            targets = targets.view(B*T)
+            logits = logits.view(B * T, C)
+            targets = targets.view(B * T)
             loss = F.cross_entropy(logits, targets)
 
         return logits, loss
-
-    def generate(self, idx, max_new_tokens, temperature=0.7, top_k=20):
-        self.eval() # Switch to eval mode for generation
+    
+    def generate(self, idx, max_new_tokens, temperature=0.8, top_k=40):    
         for _ in range(max_new_tokens):
             idx_cond = idx[:, -self.block_size:]
             logits, _ = self(idx_cond)
@@ -110,9 +91,10 @@ class Smaill(nn.Module):
             probs = F.softmax(logits, dim=-1)
             idx_next = torch.multinomial(probs, num_samples=1)
             idx = torch.cat((idx, idx_next), dim=1)
-        self.train() # Switch back to train mode
+        
         return idx
-    
+
+
 if __name__ == "__main__":
     print("✓ Smaill model.py loaded successfully!")
 
