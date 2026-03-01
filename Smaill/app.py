@@ -20,11 +20,11 @@ def load_assets():
     
     tokenizer = SimpleTokenizer(text)
     
-    model = Smaill(
+    model = Smaill(                         #values must be same as train annd model files
         vocab_size=tokenizer.vocab_size,
         block_size=64,
         n_embd=256,
-        n_heads=4
+        n_heads=8
     )
     
     try:
