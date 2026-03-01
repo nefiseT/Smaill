@@ -10,30 +10,33 @@ import torch
 from src.model import Smaill
 from src.tokenizer import SimpleTokenizer
 
-# Check CUDA availability more thoroughly
+# Print diagnostic information
 print(f"PyTorch version: {torch.__version__}")
-print(f"CUDA available: {torch.cuda.is_available()}")
-print(f"CUDA version: {torch.version.cuda if torch.cuda.is_available() else 'N/A'}")
+print(f"CUDA available (torch): {torch.cuda.is_available()}")
+print(f"CUDA version: {torch.version.cuda}")
 
-# Check if GPU is accessible
+# Check environment variable
+cuda_visible = os.environ.get('CUDA_VISIBLE_DEVICES', None)
+print(f"CUDA_VISIBLE_DEVICES: {cuda_visible}")
+
+# Try to get more info
 if torch.cuda.is_available():
-    try:
-        # Test if we can actually use the GPU
-        _ = torch.zeros(1).cuda()
-        device = torch.device("cuda")
-        print(f"GPU is accessible: {torch.cuda.get_device_name(0)}")
-    except Exception as e:
-        print(f"GPU found but not accessible: {e}")
-        device = torch.device("cpu")
-else:
-    # Check if there are GPUs that might be hidden
-    print("CUDA not available. Checking potential issues...")
-    print("- Is NVIDIA GPU installed? Check: nvidia-smi")
-    print("- Is PyTorch with CUDA installed? Try: pip install torch --index-url https://download.pytorch.org/whl/cu118")
-    print("- Is CUDA_VISIBLE_DEVICES set? Current value:", os.environ.get('CUDA_VISIBLE_DEVICES', 'not set'))
-    device = torch.device("cpu")
+    print(f"Number of GPUs: {torch.cuda.device_count()}")
+    print(f"Current GPU: {torch.cuda.current_device()}")
+    print(f"GPU name: {torch.cuda.get_device_name(0)}")
 
-print(f"Using device: {device}")
+# Try direct CUDA check using ctypes
+try:
+    import ctypes
+    cuda = ctypes.CDLL(ctypes.util.find_library('cudart'))
+    cuda.cudaGetDeviceCount(ctypes.byref(ctypes.c_int(0)))
+    print("Direct CUDA DLL check: Success")
+except Exception as e:
+    print(f"Direct CUDA DLL check failed: {e}")
+
+# Force try CUDA anyway (some systems need this)
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+print(f"\nUsing device: {device}")
 
 if device.type == "cuda":
     print(f"GPU: {torch.cuda.get_device_name(0)}")
@@ -59,7 +62,7 @@ with open('data/training_input.txt', 'r', encoding='utf-8') as f:
 tokenizer = SimpleTokenizer(text)
 data = torch.tensor(tokenizer.encode(text), dtype=torch.long)
 
-print(f"Vocabulary size: {tokenizer.vocab_size}")
+print(f"\nVocabulary size: {tokenizer.vocab_size}")
 print(f"Total tokens: {len(data)}")
 
 n = int(0.9 * len(data))
@@ -73,11 +76,6 @@ model = Smaill(
     n_embd=256,
     n_heads=8
 ).to(device)  # Move model to GPU!
-
-# Apply torch.compile for PyTorch 2.0+ speedup
-if use_compile:
-    model = torch.compile(model)
-    print("Model compiled for GPU acceleration")
 
 print(f"Model parameters: {sum(p.numel() for p in model.parameters())/1e6:.2f}M")
 
@@ -100,7 +98,7 @@ for steps in range(10000):
     optimizer.zero_grad(set_to_none=True)
     loss.backward()
     torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
-    optimizer.step()
+    optimizer.step() 
     
     if steps % 200 == 0:
         # Move context to same device for sampling
@@ -115,4 +113,3 @@ print("Model trained & weights saved...")
 context = torch.zeros((1, 1), dtype=torch.long, device=device)
 print("\n---- Generated Text ------")
 print(tokenizer.decode(model.generate(context, max_new_tokens=200)[0].cpu().tolist()))
-
