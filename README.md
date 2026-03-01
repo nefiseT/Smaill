@@ -1,4 +1,5 @@
-# Smaill
+# Smaill </br>
+small language model written and train fully locally </br>
 
 start date: 10.02
 
