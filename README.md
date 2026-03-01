@@ -60,3 +60,5 @@ why foods fly. 300. He brushes his teethere. 278. The sun feels hair. 86. We eat
 
 27.02 codes took to much time to train due to hardware issues
 trying to run it on gpu, until that 23.02 is last one
+
+v7: 01.03 runs on gpu, better output quality , ++batch ++head , will try again w bigger dataset 
