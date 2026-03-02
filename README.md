@@ -62,4 +62,14 @@ why foods fly. 300. He brushes his teethere. 278. The sun feels hair. 86. We eat
 27.02 codes took to much time to train due to hardware issues
 trying to run it on gpu, until that 23.02 is last one
 
-v7: 01.03 runs on gpu, better output quality , ++batch ++head , will try again w bigger dataset 
+v7: 01.03 runs on gpu, better output quality , ++batch ++head , will try again w bigger dataset </br>
+
+Vocabulary size: 83
+Total tokens: 57224
+Model parameters: 0.35M
+Step 0: loss 4.7196 | Sample:  0pCel te2Nw&XnJrDOMa4z[qk3e#(g;cCg'Bnm!ltaY-u:HEY~ 
+Step 200: loss 2.5153 | Sample:  Grwavin Ithts ly. She bof 2287. ther t out inghero
+(...)
+Step 29600: loss 1.1040 | Sample:  I buys of the plays witter. 426. She closes the st
+Step 29800: loss 1.0925 | Sample:  of Zepperonic (1994)" "Yo canclin shiki bird. 3142
+Model trained & weights saved...
