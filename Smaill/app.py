@@ -1,3 +1,5 @@
+import time
+import psutil
 import streamlit as st
 import torch
 import os
@@ -47,6 +49,7 @@ for message in st.session_state.messages:
 
 if prompt := st.chat_input("may i have some words..."):
     st.session_state.messages.append({"role": "user", "content": prompt})
+    start_time = time.time()        #start clock
     with st.chat_message("user"):
         st.markdown(prompt)
 
@@ -64,6 +67,22 @@ if prompt := st.chat_input("may i have some words..."):
             generated_tokens = full_output[input_length:]
             response = tokenizer.decode(generated_tokens)
             
+            gen_start = time.time()
+            full_output = model.generate(context, max_new_tokens=100)[0].tolist()
+            gen_end =  time.time()
+
+            #calculate staats
+            total_time = gen_end - start_time
+            tokens_per_sec = 100 / (gen_end - gen_start)
+
+            #ram usage
+            process = psutil.Process()
+            mem_usage = process.memory_info().rss / (1024*1024)
+
+            status.write (f" **first token** {gen_start - start_time:.3f}s")
+            status.write (f"**tokens** {tokens_per_sec:.2f} t/s ")
+            status.write(f"**memory:** {mem_usage:.1f} mb")
+            status.write(f"**total response time:** {total_time:.3f} s")
             status.update(label="sire... the answer is...", state="complete", expanded=False)
 
         st.markdown(response)
