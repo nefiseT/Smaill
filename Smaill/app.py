@@ -6,6 +6,15 @@ import os
 from src.model import Smaill
 from src.tokenizer import SimpleTokenizer
 
+with st.sidebar:
+    st.header("monitor")
+    cpu_load = psutil.cpu_percent()
+    st.progress(cpu_load / 100, text=f"CPU Load: {cpu_load}%")
+    
+    if torch.cuda.is_available():
+        gpu_mem = torch.cuda.memory_allocated(0) / (1024**2)
+        st.write(f"GPU RVAM: {gpu_mem:.1f} mb")
+
 st.set_page_config(page_title="ai we deserved", page_icon="https://www.boredpanda.com/blog/wp-content/uploads/2024/09/funny-engineering-memes-jokes-4-66ec10fe7f56d__700.jpg")
 st.title("i am speed")
 
