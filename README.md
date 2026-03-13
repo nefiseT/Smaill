@@ -73,3 +73,9 @@ Step 200: loss 2.5153 | Sample:  Grwavin Ithts ly. She bof 2287. ther t out ingh
 Step 29600: loss 1.1040 | Sample:  I buys of the plays witter. 426. She closes the st
 Step 29800: loss 1.0925 | Sample:  of Zepperonic (1994)" "Yo canclin shiki bird. 3142
 Model trained & weights saved...
+
+</br>
+13.03: larger dataset, 30000 epochs  (0.36 parameters)</br>
+Teleman. 80. The stering tall have young from and distand down of the lonce, and charp
+</br>
+
