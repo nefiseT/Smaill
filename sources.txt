@@ -26,6 +26,9 @@ https://levelup.gitconnected.com/lets-build-our-own-gpt-model-from-scratch-with-
 
 https://github.com/Infatoshi/fcc-intro-to-llms
 
+https://huggingface.co/datasets/Anthropic/hh-rlhf
+
+
 Create a Large Language Model from Scratch with Python – Tutorial
 https://www.youtube.com/watch?v=UU1WVnMk4E8
 
