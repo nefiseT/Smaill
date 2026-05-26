@@ -43,3 +43,4 @@ https://learnsql.com/blog/pop-culture-datasets/
 
 https://levelup.gitconnected.com/lets-build-our-own-gpt-model-from-scratch-with-pytorch-236a65a1fb54
 
+https://karpathy.github.io/2026/02/12/microgpt/
